@@ -4,24 +4,14 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import CardSkeleton from "../shared/CardSekeleton";
 import Card from "../shared/Card";
-import { Anime } from "@/app/_types/kitsu.types";
-
-// type Anime = {
-//   id: string;
-//   attributes: {
-//     canonicalTitle: string;
-//     posterImage?: {
-//       small?: string;
-//       medium?: string;
-//       large?: string;
-//     };
-//     averageRating?: string;
-//   };
-// };
+import { Anime, AnimeMeta } from "@/app/_types/kitsu.types";
+import Pagination from "../shared/Pagination";
+import ItemsPerPage from "../shared/ItemsPerPage";
 
 const AnimeList = () => {
   const [anime, setAnime] = useState<Anime[]>([]);
-  const [page, setPage] = useState(0);
+  const [metaAnime, setMetaAnime] = useState<AnimeMeta | null>(null);
+  const [page, setPage] = useState(1); // ✅ 1-based page
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -34,9 +24,11 @@ const AnimeList = () => {
         setLoading(true);
         setError(null);
 
+        const offset = (page - 1) * itemsPerPage;
+
         const params = new URLSearchParams({
           limit: itemsPerPage.toString(),
-          offset: (page * itemsPerPage).toString(),
+          offset: offset.toString(),
         });
 
         const res = await fetch(`/api/anime?${params.toString()}`);
@@ -49,6 +41,7 @@ const AnimeList = () => {
 
         if (active) {
           setAnime(data.anime ?? []);
+          setMetaAnime(data.meta ?? null);
         }
       } catch (err) {
         if (active) {
@@ -68,43 +61,73 @@ const AnimeList = () => {
     };
   }, [page, itemsPerPage]);
 
+  const totalPages = metaAnime ? Math.ceil(metaAnime.count / itemsPerPage) : 0;
+
+  /* =========================
+     Handlers
+     ========================= */
+
+  const onPageChange = (nextPage: number) => {
+    setPage(nextPage);
+  };
+
+  const onItemsPerPageChange = (value: number) => {
+    setItemsPerPage(value);
+    setPage(1); // ✅ reset to first page
+  };
+
   return (
-    <div className="max-w-5xl mx-auto space-y-6 p-5">
-      {error && <p className="text-red-500">{error}</p>}
+    <Wrapper>
+      <Header>
+        <Pagination
+          page={page}
+          totalPages={totalPages}
+          onPageChange={onPageChange}
+        />
+        <ItemsPerPage value={itemsPerPage} onChange={onItemsPerPageChange} />
+      </Header>
+
+      {error && <ErrorText>{error}</ErrorText>}
 
       <AnimeGrid>
         {loading
           ? Array.from({ length: itemsPerPage }).map((_, i) => (
               <CardSkeleton key={`skeleton-${page}-${i}`} />
             ))
-          : anime.map((item: Anime) => <Card anime={item} key={item.id} />)}
+          : anime.map((item) => <Card key={item.id} anime={item} />)}
       </AnimeGrid>
-
-      {/* Pagination */}
-      <div className="flex justify-center gap-4 pt-6">
-        <button
-          disabled={page === 0}
-          onClick={() => setPage((p) => Math.max(p - 1, 0))}
-          className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50"
-        >
-          Prev
-        </button>
-
-        <button
-          onClick={() => setPage((p) => p + 1)}
-          className="px-4 py-2 rounded bg-gray-200"
-        >
-          Next
-        </button>
-      </div>
-    </div>
+    </Wrapper>
   );
 };
 
 export default AnimeList;
 
+/* =========================
+   Styled Components
+   ========================= */
+
+const Wrapper = styled.div`
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+`;
+
 const AnimeGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 24px;
+`;
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const ErrorText = styled.p`
+  color: #ef4444;
+  text-align: center;
 `;

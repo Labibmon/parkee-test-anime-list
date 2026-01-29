@@ -22,11 +22,13 @@ export interface Anime {
   attributes: AnimeAttributes;
 }
 
+export interface AnimeMeta {
+  count: number;
+}
+
 export interface AnimeListResponse {
   data: Anime[];
-  meta: {
-    count: number;
-  };
+  meta: AnimeMeta;
 }
 
 export interface AnimeDetailResponse {

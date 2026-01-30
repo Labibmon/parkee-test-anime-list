@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Skeleton from "../shared/Skeleton";
 import { Anime } from "@/app/_types/kitsu.types";
+import { useRouter } from "next/navigation";
 
 type AnimeDetail = {
   id: string;
 };
 
 const AnimeDetail = ({ id }: AnimeDetail) => {
+  const router = useRouter();
   const [anime, setAnime] = useState<Anime>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -71,6 +73,7 @@ const AnimeDetail = ({ id }: AnimeDetail) => {
         <>
           <Header>
             <Background $image={anime?.attributes.coverImage.original} />
+            <BackButton onClick={() => router.push("/")}>← Back</BackButton>
             <HeaderContent>
               <HeaderInside>
                 <Poster
@@ -88,6 +91,18 @@ const AnimeDetail = ({ id }: AnimeDetail) => {
               </HeaderInside>
             </HeaderContent>
           </Header>
+
+          <InfoContainer>
+            <Rating>
+              <h3>SCORE</h3>
+              <h4>{anime?.attributes.averageRating}</h4>
+              <h3>{anime?.attributes.userCount} Users</h3>
+            </Rating>
+            <InfoContent>
+              <InfoTitle>Synopsis</InfoTitle>
+              <InfoSynopsis>{anime?.attributes.synopsis}</InfoSynopsis>
+            </InfoContent>
+          </InfoContainer>
         </>
       )}
     </Wrapper>
@@ -98,6 +113,7 @@ export default AnimeDetail;
 
 const Wrapper = styled.div`
   margin: 0 auto;
+  overflow-x: hidden;
 `;
 
 const Header = styled.div`
@@ -113,6 +129,28 @@ const Header = styled.div`
     height: auto;
     min-height: 60vh;
     padding: 32px 0;
+  }
+`;
+
+const BackButton = styled.button`
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 4;
+
+  background: rgba(0, 0, 0, 0.65);
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 14px;
+
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+
+  @media (max-width: 768px) {
+    padding: 8px 12px;
+    font-size: 12px;
   }
 `;
 
@@ -228,4 +266,76 @@ const SubTitle = styled.p`
 const ErrorText = styled.p`
   text-align: center;
   color: #ef4444;
+`;
+
+//INFO DETAIL ANIME
+const InfoContainer = styled.div`
+  max-width: 80rem;
+  width: 100%;
+  margin: auto;
+  padding: 24px 16px;
+
+  display: flex;
+  gap: 28px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
+`;
+
+const InfoContent = styled.div`
+  width: 100%;
+  color: ${({ theme }) => theme.colors.white};
+`;
+
+const InfoTitle = styled.h4`
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 24px;
+
+  @media (max-width: 640px) {
+    text-align: center;
+    font-size: 20px;
+  }
+`;
+
+const InfoSynopsis = styled.p`
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.7;
+  margin-bottom: 24px;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+    text-align: justify;
+  }
+`;
+
+const Rating = styled.div`
+  width: 10rem;
+  height: 10rem;
+  border-radius: 25px;
+  background-color: ${({ theme }) => theme.colors.primary};
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  color: ${({ theme }) => theme.colors.white};
+  font-weight: 600;
+
+  h4 {
+    font-size: 48px;
+  }
+
+  @media (max-width: 768px) {
+    width: 8rem;
+    height: 8rem;
+
+    h4 {
+      font-size: 32px;
+    }
+  }
 `;

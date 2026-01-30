@@ -11,6 +11,7 @@ export interface AnimeAttributes {
   description: string;
   averageRating: string | null;
   canonicalTitle: string;
+  userCount: number;
   coverImage: {
     small: string;
     medium: string;

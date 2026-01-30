@@ -8,12 +8,8 @@ export type Banner = {
   id: number;
   backgroundImage: string;
   image: string;
-  title: {
-    en: string;
-    en_jp: string;
-    en_us: string;
-    ja_jp: string;
-  };
+  title: string;
+  titleJpn: string;
   subtitle?: string;
 };
 
@@ -90,8 +86,8 @@ const BannerCarousel = ({ items }: BannerCarousel) => {
             <Background $image={banner.backgroundImage} />
             <Content>
               <h4>Trending</h4>
-              <h2>{banner.title.en || banner.title.en_us}</h2>
-              <h3>{banner.title.ja_jp}</h3>
+              <h2>{banner.title}</h2>
+              <h3>{banner.titleJpn}</h3>
               <p>{banner.subtitle}</p>
               <Button onClick={() => router.push(`/anime/${banner.id}`)}>
                 Check Now

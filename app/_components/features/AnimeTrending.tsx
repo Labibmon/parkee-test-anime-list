@@ -57,7 +57,11 @@ const AnimeTrending = () => {
             id: Number(trending.id),
             backgroundImage: trending.attributes.coverImage?.original,
             image: trending.attributes.posterImage?.original,
-            title: trending.attributes.titles,
+            title:
+              trending.attributes.titles.en ||
+              trending.attributes.titles.en_us ||
+              trending.attributes.canonicalTitle,
+            titleJpn: trending.attributes.titles.ja_jp,
             subtitle: trending.attributes.description,
           }))}
         />

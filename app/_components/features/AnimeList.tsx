@@ -102,15 +102,24 @@ export default AnimeList;
 const Wrapper = styled.div`
   max-width: 80rem;
   margin: 0 auto;
-  padding: 60px 0;
+  padding: 60px 16px;
   display: flex;
   flex-direction: column;
   gap: 24px;
+
+  @media (max-width: 640px) {
+    padding: 32px 16px;
+  }
 `;
 
 const Title = styled.h1`
   font-size: 24px;
   font-weight: 600;
+
+  @media (max-width: 640px) {
+    text-align: center;
+    font-size: 20px;
+  }
 `;
 
 const AnimeGrid = styled.div`
@@ -118,15 +127,37 @@ const AnimeGrid = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 24px;
   margin-top: 24px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
 `;
 
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    gap: 12px;
+  }
 `;
 
 const ErrorText = styled.p`
   color: #ef4444;
   text-align: center;
+
+  @media (max-width: 640px) {
+    font-size: 14px;
+  }
 `;

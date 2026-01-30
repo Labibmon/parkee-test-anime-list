@@ -21,13 +21,18 @@ interface BannerCarousel {
   items: Banner[];
 }
 
-const AUTO_SLIDE_INTERVAL = 5000;
+const AUTO_SLIDE_INTERVAL = 10000;
 
 const BannerCarousel = ({ items }: BannerCarousel) => {
   const router = useRouter();
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  const minSwipeDistance = 50;
 
   useEffect(() => {
     if (paused || items.length <= 1) return;
@@ -50,11 +55,31 @@ const BannerCarousel = ({ items }: BannerCarousel) => {
   const goTo = (index: number) => {
     setActiveIndex(index);
   };
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+
+    if (distance > minSwipeDistance) next();
+    if (distance < -minSwipeDistance) prev();
+  };
 
   return (
     <Wrapper
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
     >
       <NavButton $left onClick={prev}>
         ‹
@@ -94,6 +119,17 @@ const Wrapper = styled.div`
   overflow: hidden;
   height: 70vh;
   background: ${({ theme }) => theme.colors.black};
+
+  touch-action: pan-y;
+  user-select: none;
+
+  @media (max-width: 768px) {
+    height: 55vh;
+  }
+
+  @media (max-width: 480px) {
+    height: 80vh;
+  }
 `;
 
 const Slider = styled.div<{ $index: number }>`
@@ -120,18 +156,16 @@ const Background = styled.div<{ $image: string }>`
   &::before {
     content: "";
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 90%;
-    height: 100%;
-
+    inset: 0;
     background: linear-gradient(
       to right,
-      rgba(0, 0, 0, 0.65),
+      rgba(0, 0, 0, 0.75),
       rgba(0, 0, 0, 0)
     );
+  }
 
-    pointer-events: none;
+  @media (max-width: 768px) {
+    background-position: center;
   }
 `;
 
@@ -150,6 +184,8 @@ const Content = styled.div`
   align-items: start;
   color: ${({ theme }) => theme.colors.white};
 
+  padding: 0 24px;
+
   > h2 {
     font-size: 48px;
     font-weight: 600;
@@ -160,14 +196,35 @@ const Content = styled.div`
     font-weight: 600;
   }
 
-  p{
+  p {
     margin-top: 12px;
     margin-bottom: 24px;
     width: 50%;
+
     display: -webkit-box;
-    -webkit-line-clamp: 5; /* 👈 max lines */
+    -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+
+  /* 📱 MOBILE */
+  @media (max-width: 768px) {
+    height: auto;
+    align-items: flex-start;
+
+    > h2 {
+      font-size: 28px;
+      line-height: 1.2;
+    }
+
+    > h3 {
+      font-size: 16px;
+    }
+
+    p {
+      width: 100%;
+      -webkit-line-clamp: 3;
+    }
   }
 `;
 
@@ -176,8 +233,7 @@ const NavButton = styled.button<{ $left?: boolean }>`
   top: 50%;
   ${({ $left }) => ($left ? "left: 24px;" : "right: 24px;")}
   transform: translateY(-50%);
-
-  z-index: 10; /* 👈 FIX */
+  z-index: 10;
 
   background: rgba(0, 0, 0, 0.4);
   color: white;
@@ -187,19 +243,25 @@ const NavButton = styled.button<{ $left?: boolean }>`
   border-radius: 50%;
   cursor: pointer;
   font-size: 32px;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const DotsContainer = styled.div`
   position: absolute;
   bottom: 30px;
   left: 0;
-
   width: 100%;
-  margin: 0 auto;
 
   display: flex;
-  flex-direction: row;
-  justify-content: start;
+  justify-content: flex-start;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+    bottom: 16px;
+  }
 `;
 
 const Dots = styled.div`
@@ -207,9 +269,11 @@ const Dots = styled.div`
   margin: 0 auto;
 
   display: flex;
-  flex-direction: row;
-  justify-content: start;
   gap: 8px;
+
+  @media (max-width: 768px) {
+    width: auto;
+  }
 `;
 
 const Dot = styled.button<{ $active: boolean }>`
@@ -220,4 +284,9 @@ const Dot = styled.button<{ $active: boolean }>`
   cursor: pointer;
   background: ${({ $active, theme }) =>
     $active ? theme.colors.primary : "rgba(255,255,255,0.5)"};
+
+  @media (max-width: 768px) {
+    width: ${({ $active }) => ($active ? "20px" : "10px")};
+    height: 10px;
+  }
 `;

@@ -24,20 +24,25 @@ Props) {
           Prev
         </Button>
 
-        {paginationRange.map((item, index) =>
-          item === "..." ? (
-            <Dots key={`dots-${index}`}>…</Dots>
-          ) : (
-            <PageButton
-              key={`page-${item}-${index}`}
-              $active={item === page}
-              onClick={() => onPageChange(item)}
-              // disabled={disabled}
-            >
-              {item}
-            </PageButton>
-          )
-        )}
+        <Pages>
+          {paginationRange.map((item, index) =>
+            item === "..." ? (
+              <Dots key={`dots-${index}`}>…</Dots>
+            ) : (
+              <PageButton
+                key={`page-${item}-${index}`}
+                $active={item === page}
+                onClick={() => onPageChange(item)}
+              >
+                {item}
+              </PageButton>
+            )
+          )}
+        </Pages>
+
+        <MobileIndicator>
+          {page} / {totalPages}
+        </MobileIndicator>
 
         <Button
           disabled={page === totalPages}
@@ -54,6 +59,7 @@ const Wrapper = styled.div`
   display: flex;
   gap: 8px;
   justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
 `;
 
@@ -65,4 +71,24 @@ const PageButton = styled(Button)<{ $active: boolean }>`
 const Dots = styled.span`
   padding: 8px 12px;
   color: #6b7280;
+`;
+
+const Pages = styled.div`
+  display: flex;
+  gap: 8px;
+
+  @media (max-width: 640px) {
+    display: none;
+  }
+`;
+
+const MobileIndicator = styled.div`
+  display: none;
+  font-weight: 500;
+  color: #374151;
+  padding: 0 8px;
+
+  @media (max-width: 640px) {
+    display: block;
+  }
 `;

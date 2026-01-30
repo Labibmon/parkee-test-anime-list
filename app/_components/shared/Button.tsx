@@ -32,10 +32,20 @@ const sizes: Record<Size, ReturnType<typeof css>> = {
   sm: css`
     padding: ${({ theme }) => theme.spacing.sm};
     font-size: ${({ theme }) => theme.fontSize.sm};
+
+    @media (max-width: 640px) {
+      padding: ${({ theme }) => theme.spacing.xs};
+      font-size: ${({ theme }) => theme.fontSize.xs};
+    }
   `,
   md: css`
     padding: ${({ theme }) => theme.spacing.md};
     font-size: ${({ theme }) => theme.fontSize.md};
+
+    @media (max-width: 640px) {
+      padding: ${({ theme }) => theme.spacing.sm};
+      font-size: ${({ theme }) => theme.fontSize.sm};
+    }
   `,
 };
 
@@ -45,6 +55,8 @@ const Button = styled.button<ButtonProps>`
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s ease;
+
+  min-height: 44px; /* 👈 mobile tap target */
 
   ${({ variant = "primary" }) => variants[variant]}
   ${({ size = "md" }) => sizes[size]}

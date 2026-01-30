@@ -28,11 +28,27 @@ const Wrapper = styled.div`
   align-items: center;
   gap: 8px;
   font-size: 16px;
+  white-space: nowrap;
+
+  @media (max-width: 640px) {
+    font-size: 14px;
+    gap: 6px;
+  }
 `;
 
 const Select = styled.select`
   padding: 14px 16px;
   border-radius: 6px;
   background: #ffffff;
-  color: #000000
+  color: #000000;
+  border: 1px solid #d1d5db;
+
+  min-height: 44px; 
+
+  @media (max-width: 640px) {
+    padding: 6px 12px;
+    font-size: 14px;
+    min-height: 20px; 
+
+  }
 `;

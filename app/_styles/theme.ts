@@ -10,6 +10,7 @@ export const theme = {
     disabled: "#9CA3AF",
   },
   spacing: {
+    xs: "4px",
     sm: "8px",
     md: "12px",
     lg: "16px",
@@ -19,6 +20,7 @@ export const theme = {
     md: "8px",
   },
   fontSize: {
+    xs: "12px",
     sm: "14px",
     md: "16px",
   },

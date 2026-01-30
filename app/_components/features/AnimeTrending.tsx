@@ -47,10 +47,6 @@ const AnimeTrending = () => {
     };
   }, []);
 
-  useEffect(() => {
-    console.log("animeTrending", animeTrending);
-  }, [animeTrending]);
-
   return (
     <Wrapper>
       {loading ? (

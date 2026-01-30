@@ -27,12 +27,14 @@ const SkeletonBox = styled.div<{
   width: ${({ $width }) => $width};
   height: ${({ $height }) => $height};
   border-radius: ${({ $radius }) => $radius};
+
   background: linear-gradient(
     90deg,
-    #f0f0f0 25%,
-    #e5e5e5 37%,
-    #f0f0f0 63%
+    #1a1a1a 25%,
+    #2a2a2a 37%,
+    #1a1a1a 63%
   );
+
   background-size: 400% 100%;
   animation: ${shimmer} 1.4s ease infinite;
 `;

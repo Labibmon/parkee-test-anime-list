@@ -9,7 +9,10 @@ type Props = {
 export default function Card({ anime }: Props) {
   const router = useRouter();
 
-  const titleEn = anime.attributes.titles.en || anime.attributes.canonicalTitle;
+  const titleEn =
+    anime.attributes.titles.en ||
+    anime.attributes.titles.en_us ||
+    anime.attributes.canonicalTitle;
   const titleJp = anime.attributes.titles.ja_jp;
 
   return (
@@ -27,7 +30,7 @@ export default function Card({ anime }: Props) {
 
 const CardContainer = styled.div`
   cursor: pointer;
-  background: #fff;
+  background: #000000;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -45,13 +48,19 @@ const Poster = styled.img`
 `;
 
 const Title = styled.h3`
-  font-size: 14px;
+  text-transform: uppercase;
+  font-size: 18px;
   font-weight: 600;
   padding: 8px;
+  color: #ffffff;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const SubTitle = styled.p`
   font-size: 12px;
-  color: #6b7280;
+  color: #ffffff;
   padding: 0 8px 8px;
 `;

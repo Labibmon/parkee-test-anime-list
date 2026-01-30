@@ -1,14 +1,22 @@
 export interface AnimeTitles {
-  en?: string;
-  ja_jp?: string;
-  en_jp?: string;
+  en: string;
+  en_jp: string;
+  en_us: string;
+  ja_jp: string;
 }
 
 export interface AnimeAttributes {
   titles: AnimeTitles;
   synopsis: string;
+  description: string;
   averageRating: string | null;
   canonicalTitle: string;
+  coverImage: {
+    small: string;
+    medium: string;
+    large: string;
+    original: string;
+  };
   posterImage: {
     small: string;
     medium: string;

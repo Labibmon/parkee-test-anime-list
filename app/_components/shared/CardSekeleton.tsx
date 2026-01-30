@@ -14,7 +14,7 @@ export default function CardSekeleton() {
 }
 
 const Card = styled.div`
-  background: #fff;
+  background: #000000;
   border-radius: 12px;
   padding-bottom: 12px;
 `;

@@ -11,7 +11,7 @@ import ItemsPerPage from "../shared/ItemsPerPage";
 const AnimeList = () => {
   const [anime, setAnime] = useState<Anime[]>([]);
   const [metaAnime, setMetaAnime] = useState<AnimeMeta | null>(null);
-  const [page, setPage] = useState(1); // ✅ 1-based page
+  const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -63,10 +63,6 @@ const AnimeList = () => {
 
   const totalPages = metaAnime ? Math.ceil(metaAnime.count / itemsPerPage) : 0;
 
-  /* =========================
-     Handlers
-     ========================= */
-
   const onPageChange = (nextPage: number) => {
     setPage(nextPage);
   };
@@ -78,6 +74,7 @@ const AnimeList = () => {
 
   return (
     <Wrapper>
+      <Title>Anime List</Title>
       <Header>
         <Pagination
           page={page}
@@ -102,23 +99,25 @@ const AnimeList = () => {
 
 export default AnimeList;
 
-/* =========================
-   Styled Components
-   ========================= */
-
 const Wrapper = styled.div`
   max-width: 80rem;
   margin: 0 auto;
-  padding: 20px;
+  padding: 60px 0;
   display: flex;
   flex-direction: column;
   gap: 24px;
 `;
 
+const Title = styled.h1`
+  font-size: 24px;
+  font-weight: 600;
+`;
+
 const AnimeGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 24px;
+  margin-top: 24px;
 `;
 
 const Header = styled.div`

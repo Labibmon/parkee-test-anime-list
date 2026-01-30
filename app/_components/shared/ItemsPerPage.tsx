@@ -27,10 +27,12 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
+  font-size: 16px;
 `;
 
 const Select = styled.select`
-  padding: 6px 10px;
+  padding: 14px 16px;
   border-radius: 6px;
+  background: #ffffff;
+  color: #000000
 `;

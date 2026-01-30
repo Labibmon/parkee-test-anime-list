@@ -3,6 +3,7 @@
 import { theme } from "@/app/_styles/theme";
 import { ThemeProvider } from "styled-components";
 import { Geist, Geist_Mono } from "next/font/google";
+import StyledComponentsRegistry from "@/app/_lib/styled-components-registry";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,7 +22,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        <StyledComponentsRegistry>
+          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );

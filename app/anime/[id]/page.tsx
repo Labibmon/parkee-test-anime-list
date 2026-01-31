@@ -1,5 +1,3 @@
-// import ProductDetail from "@/app/_components/ProductDetail";
-
 import AnimeDetail from "@/app/_components/features/AnimeDetail";
 
 interface AnimeDetailPageProps {

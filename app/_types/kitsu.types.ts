@@ -12,6 +12,10 @@ export interface AnimeAttributes {
   averageRating: string | null;
   canonicalTitle: string;
   userCount: number;
+  subtype: string;
+  episodeCount: number;
+  startDate: string;
+  endDate: string;
   coverImage: {
     small: string;
     medium: string;

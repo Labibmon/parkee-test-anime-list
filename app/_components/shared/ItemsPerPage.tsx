@@ -34,6 +34,10 @@ const Wrapper = styled.div`
     font-size: 14px;
     gap: 6px;
   }
+
+  > label {
+    color: #ffffff;
+  }
 `;
 
 const Select = styled.select`

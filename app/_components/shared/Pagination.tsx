@@ -85,7 +85,7 @@ const Pages = styled.div`
 const MobileIndicator = styled.div`
   display: none;
   font-weight: 500;
-  color: #374151;
+  color: #ffffff;
   padding: 0 8px;
 
   @media (max-width: 640px) {
